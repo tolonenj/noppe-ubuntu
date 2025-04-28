@@ -5,26 +5,28 @@ set -e
 apt-get update\
 && apt-get upgrade -y\
 && apt-get install -y tini ttyd\
-   nano\
-   vim-tiny\
-   iputils-ping\
-   tmux\
-   screen\
-   less\
-   file\
-   python3\
-&& apt-get clean\
-&& apt-get autoremove --purge\
-&& apt-get purge -y apt\
-&& rm -fr /etc/apt\
-&& rm -fr /var/log/apt\
-&& rm -fr /var/lib/apt\
-&& rm -fr /var/lib/dpkg\
-&& rm -fr /var/cache/apt\
+ nano\
+ vim-tiny\
+ iputils-ping\
+ tmux\
+ screen\
+ less\
+ file\
+ python3 \
+&& rm -f /etc/pam.d/login \
+&& echo "" > /etc/legal \
+&& apt-get clean \
+&& apt-get autoremove --purge \
+&& rm -fr /etc/apt \
+&& rm -fr /var/log/apt \
+&& rm -fr /var/lib/apt \
+&& rm -fr /var/lib/dpkg \
+&& rm -fr /var/cache/apt \
 && rm -fr /var/log/*
 
 # List of commands that are not wanted
-rm /usr/bin/ping6
+rm /usr/bin/ping6 \
+&& rm /usr/bin/unminimize
 
 # Remove write permissions from key directories
 chmod -R a-w /usr/bin /usr/sbin /sbin
@@ -35,6 +37,19 @@ mkdir -p /etc/skel
 cat > /etc/skel/.profile << EOF
 export EDITOR="nano"
 export PS1="\w \$ "
+EOF
+
+# Generate a minimum pam.d/login file to correctly show motd message above
+cat > /etc/pam.d/login << 'EOF'
+auth       required     pam_securetty.so
+auth       requisite    pam_nologin.so
+auth       include      common-auth
+account    include      common-account
+session    required     pam_env.so readenv=1
+session    required     pam_env.so readenv=1 envfile=/etc/default/locale
+session    required     pam_motd.so motd=/etc/motd
+session    include      common-session
+session    optional     pam_mail.so standard
 EOF
 
 # Generate a welcome message and a brief disclaimer
