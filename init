@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+
+# Add user from environment variables
+useradd -m -s /bin/bash $USERNAME
+echo "$USERNAME:$PASSWORD" | chpasswd &> /dev/null
+
+# Start ttyd
+exec ttyd -W -p 8787 login
