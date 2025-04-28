@@ -8,6 +8,8 @@ apt-get update\
    nano\
    vim-tiny\
    iputils-ping\
+   tmux\
+   screen\
    less\
    file\
    python3\
