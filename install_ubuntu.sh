@@ -10,6 +10,8 @@ apt-get update\
  iputils-ping\
  tmux\
  screen\
+ tree\
+ wget\
  less\
  file\
  python3 \
@@ -33,11 +35,7 @@ chmod -R a-w /usr/bin /usr/sbin /sbin
 
 # Configure user's default settings
 mkdir -p /etc/skel
-
-cat > /etc/skel/.profile << EOF
-export EDITOR="nano"
-export PS1="\w \$ "
-EOF
+ln -s my-work/.profile /etc/skel/.profile
 
 # Generate a minimum pam.d/login file to correctly show motd message above
 cat > /etc/pam.d/login << 'EOF'
