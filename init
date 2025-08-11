@@ -3,7 +3,10 @@ set -e
 
 # Add user from environment variables
 useradd -m -s /bin/bash $USERNAME
+
 echo "$USERNAME:$PASSWORD" | chpasswd &> /dev/null
+
+# Add a possibility to store .profile in a persistent storage
 ln -s my-work/.profile /home/$USERNAME/.profile
 
 # Start ttyd

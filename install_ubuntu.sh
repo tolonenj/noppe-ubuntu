@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+# Install script for the contents of the linux-cli
+
 # Configure commands available
 apt-get update\
 && apt-get upgrade -y\
@@ -14,7 +16,8 @@ apt-get update\
  wget\
  less\
  file\
- python3 \
+ python3\
+ python3.12-venv \
 && rm -f /etc/pam.d/login \
 && echo "" > /etc/legal \
 && apt-get clean \
@@ -34,7 +37,7 @@ rm /usr/bin/ping6 \
 chmod -R a-w /usr/bin /usr/sbin /sbin
 
 # Configure user's default settings
-mkdir -p /etc/skel
+rm /etc/skel/.profile
 ln -s my-work/.profile /etc/skel/.profile
 
 # Generate a minimum pam.d/login file to correctly show motd message above
